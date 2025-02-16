@@ -1,0 +1,38 @@
+server:
+  port: 6666
+
+
+spring:
+  redis:
+    host: 124.223.32.160
+    port: 6379
+    password: redis
+    lettuce:
+      pool:
+        max-idle: 10
+        min-idle: 5
+        max-active: 50
+        max-wait: -1ms
+    timeout: 10000ms
+
+lock:
+  server:
+    server-type: single
+    single:
+      address: redis://${spring.redis.host}:${spring.redis.port}
+      password: ${spring.redis.password}
+
+  more:
+    servers:
+      -
+        server-type: single
+        single:
+          address: redis://${spring.redis.host}:${spring.redis.port}
+          password: ${spring.redis.password}
+      -
+        server-type: single
+        single:
+          address: redis://${spring.redis.host}:6380
+          password: ${spring.redis.password}
+  config:
+    lock-watchdog-timeout: 10s
