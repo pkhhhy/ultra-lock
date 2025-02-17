@@ -3,6 +3,7 @@ package com.ultralock.config;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.ultralock.enums.LockServerTypeEnum;
+import com.ultralock.lockFactory.RedissonClientFactory;
 import com.ultralock.util.CollectionsUtil;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -12,12 +13,14 @@ import org.redisson.config.MasterSlaveServersConfig;
 import org.redisson.config.SingleServerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Description:reddison 配置类
@@ -32,7 +35,7 @@ import java.util.List;
         LockMoreServerProperties.class,
         LockConfigProperties.class
 })
-public class RedisonConfiguration {
+public class RedissonConfiguration {
 
     @Autowired
     private LockServerProperties lockServerProperties;
@@ -42,7 +45,6 @@ public class RedisonConfiguration {
 
     @Autowired
     private LockConfigProperties lockConfigProperties;
-
 
     private RedissonClient initReddisionClient() {
         Config config = initConfig();
@@ -112,5 +114,20 @@ public class RedisonConfiguration {
         MasterSlaveServersConfig masterSlave = lockServerProperties.getMasterSlave();
         MasterSlaveServersConfig masterSlaveServersConfig = config.useMasterSlaveServers();
         BeanUtil.copyProperties(masterSlave, masterSlaveServersConfig, CopyOptions.create().ignoreNullValue());
+    }
+
+    @Bean(value = "reddisonClientFactory", destroyMethod = "shutdown")
+    public RedissonClientFactory reddisonClientFactory() {
+        RedissonClientFactory redissonClientFactory = new RedissonClientFactory();
+        RedissonClient redissonClient = initReddisionClient();
+        if (Objects.nonNull(redissonClient)) {
+            redissonClientFactory.setRedissonClient(redissonClient);
+        }
+        List<RedissonClient> redissonClients = initMoreReddisonClient();
+        if (CollectionsUtil.isNotEmpty(redissonClients)) {
+            redissonClientFactory.setRedissonClients(redissonClients);
+        }
+
+        return redissonClientFactory;
     }
 }
