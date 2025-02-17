@@ -1,6 +1,7 @@
 package com.ultralock.Aspect;
 
 import com.ultralock.annotation.Lock;
+import com.ultralock.annotation.MultiLock;
 import com.ultralock.enums.LockHandleTypeEnum;
 import com.ultralock.help.LockThreadLocalHelp;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,8 @@ import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +26,11 @@ public class RLockHandle extends AbstractLockHandle {
     @Autowired
     private LockThreadLocalHelp lockThreadLocalHelp;
 
+
+    @Override
+    public List<Integer> lockHandleType() {
+        return Arrays.asList(LockHandleTypeEnum.R_LOCK.getType());
+    }
 
 
     @Override
@@ -59,4 +67,7 @@ public class RLockHandle extends AbstractLockHandle {
     public void unLock() {
         lockThreadLocalHelp.removeLock(LockHandleTypeEnum.R_LOCK);
     }
+
+    @Override
+    public void multiLock(String[] paramNames, Object[] paramValues, MultiLock multiLock) {}
 }

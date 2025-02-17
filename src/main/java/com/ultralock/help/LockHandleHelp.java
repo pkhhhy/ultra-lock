@@ -5,6 +5,7 @@ import com.ultralock.enums.LockTypeEnum;
 import com.ultralock.lockFactory.RedissonClientFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -12,6 +13,8 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -27,6 +30,7 @@ public class LockHandleHelp {
 
     @Autowired
     private RedissonClientFactory redissonClientFactory;
+
 
     public RLock getLockByLockType(String lockName, LockTypeEnum lockType) {
         switch (lockType) {
@@ -80,4 +84,23 @@ public class LockHandleHelp {
         return obj.toString();
     }
 
+    public List<RLock> getLocksByLockType(String lockName, LockTypeEnum lockType) {
+        List<RLock> rLocks = new ArrayList<>(redissonClientFactory.getRedissonClients().size());
+        switch (lockType) {
+            case NO_FAIR:
+                for (RedissonClient redissonClient : redissonClientFactory.getRedissonClients()) {
+                    RLock lock = redissonClient.getLock(lockName);
+                    rLocks.add(lock);
+                }
+                return rLocks;
+            case FAIR:
+                for (RedissonClient redissonClient : redissonClientFactory.getRedissonClients()) {
+                    RLock lock = redissonClient.getFairLock(lockName);
+                    rLocks.add(lock);
+                }
+            default:
+                break;
+        }
+        return null;
+    }
 }

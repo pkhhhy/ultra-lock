@@ -1,6 +1,9 @@
 package com.ultralock.Aspect;
 
 import com.ultralock.annotation.Lock;
+import com.ultralock.annotation.MultiLock;
+
+import java.util.List;
 
 /**
  * Description:
@@ -10,9 +13,14 @@ import com.ultralock.annotation.Lock;
  */
 public interface LockHandle {
 
+    List<Integer> lockHandleType();
+
     void lock(String[] paramNames, Object[] paramValues, Lock lock);
 
     void unLock();
+
+    void multiLock(String[] paramNames, Object[] paramValues, MultiLock multiLock);
+
 
 
 }
