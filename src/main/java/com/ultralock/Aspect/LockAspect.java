@@ -2,6 +2,7 @@ package com.ultralock.Aspect;
 
 import com.ultralock.annotation.Lock;
 import com.ultralock.annotation.MultiLock;
+import com.ultralock.annotation.RedLock;
 import com.ultralock.enums.LockHandleTypeEnum;
 import com.ultralock.lockFactory.LockHandleFactory;
 import org.aspectj.lang.JoinPoint;
@@ -34,7 +35,6 @@ public class LockAspect {
         Object[] args = joinPoint.getArgs();
         Signature signature = joinPoint.getSignature();
         String[] parameterNames = ((MethodSignature) signature).getParameterNames();
-
         LockHandle lockHandle = lockHandleFactory.getLockHandle(LockHandleTypeEnum.R_LOCK.getType());
         lockHandle.lock(parameterNames, args, lock);
     }
@@ -51,7 +51,6 @@ public class LockAspect {
         Object[] args = joinPoint.getArgs();
         Signature signature = joinPoint.getSignature();
         String[] parameterNames = ((MethodSignature) signature).getParameterNames();
-
         LockHandle lockHandle = lockHandleFactory.getLockHandle(LockHandleTypeEnum.MULTI_LOCK.getType());
         lockHandle.multiLock(parameterNames, args, multiLock);
     }
@@ -62,4 +61,12 @@ public class LockAspect {
         lockHandle.unLock();
     }
 
+    @Before("@annotation(redLock)")
+    public void beforeRed(JoinPoint joinPoint, RedLock redLock) {
+        Object[] args = joinPoint.getArgs();
+        Signature signature = joinPoint.getSignature();
+        String[] parameterNames = ((MethodSignature) signature).getParameterNames();
+        LockHandle lockHandle = lockHandleFactory.getLockHandle(LockHandleTypeEnum.RED_LOCK.getType());
+        lockHandle.redLock(parameterNames, args, redLock);
+    }
 }

@@ -14,6 +14,7 @@ import java.util.Objects;
 public enum LockHandleTypeEnum {
     R_LOCK(1, "可重入锁"),
     MULTI_LOCK(2,"联合锁"),
+    RED_LOCK(3,"红锁"),
     UNKNOWN(404, "未知"),
     ;
 
