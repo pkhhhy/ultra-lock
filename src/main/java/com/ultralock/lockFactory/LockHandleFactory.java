@@ -30,4 +30,8 @@ public class LockHandleFactory {
             }
         });
     }
+
+    public LockHandle getLockHandle(Integer type) {
+        return typeToHandleMap.get(type);
+    }
 }
