@@ -4,9 +4,9 @@ server:
 
 spring:
   redis:
-    host: 124.223.32.160
+    host: 127.0.0.1
     port: 6379
-    password: redis
+    password: 1274969770
     lettuce:
       pool:
         max-idle: 10
@@ -32,7 +32,7 @@ lock:
       -
         server-type: single
         single:
-          address: redis://${spring.redis.host}:6380
-          password: ${spring.redis.password}
+          address: redis://192.168.10.5:6379
+          password: mUWPMPpWyv8I069o
   config:
     lock-watchdog-timeout: 10s

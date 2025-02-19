@@ -2,6 +2,7 @@ package com.ultralock.Aspect;
 
 import com.ultralock.annotation.Lock;
 import com.ultralock.annotation.MultiLock;
+import com.ultralock.annotation.ReadWriteLock;
 import com.ultralock.annotation.RedLock;
 import com.ultralock.enums.LockHandleTypeEnum;
 import com.ultralock.lockFactory.LockHandleFactory;
@@ -68,5 +69,21 @@ public class LockAspect {
         String[] parameterNames = ((MethodSignature) signature).getParameterNames();
         LockHandle lockHandle = lockHandleFactory.getLockHandle(LockHandleTypeEnum.RED_LOCK.getType());
         lockHandle.redLock(parameterNames, args, redLock);
+    }
+
+    @Before("@annotation(readWriteLock)")
+    public void beforeRW(JoinPoint joinPoint, ReadWriteLock readWriteLock) {
+        Object[] args = joinPoint.getArgs();
+        Signature signature = joinPoint.getSignature();
+        String[] parameterNames = ((MethodSignature) signature).getParameterNames();
+
+        LockHandle lockHandle = lockHandleFactory.getLockHandle(LockHandleTypeEnum.READWRITE_LOCK.getType());
+        lockHandle.readWriteLock(parameterNames, args, readWriteLock);
+    }
+
+    @After("@annotation(readWriteLock)")
+    public void afterRW(JoinPoint joinPoint, ReadWriteLock readWriteLock) {
+        LockHandle lockHandle = lockHandleFactory.getLockHandle(LockHandleTypeEnum.READWRITE_LOCK.getType());
+        lockHandle.unLock();
     }
 }

@@ -2,6 +2,8 @@ package com.ultralock.Aspect;
 
 import com.ultralock.annotation.Lock;
 import com.ultralock.annotation.MultiLock;
+import com.ultralock.annotation.ReadWriteLock;
+import com.ultralock.annotation.RedLock;
 import com.ultralock.enums.LockHandleTypeEnum;
 import com.ultralock.help.LockThreadLocalHelp;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +53,6 @@ public class RLockHandle extends AbstractLockHandle {
 
         boolean getLock = false;
         try {
-            // todo 未获取到锁的操作
             getLock = rLock.tryLock(waitTime, leaseTime, timeUnit);
         } catch (InterruptedException e) {
             log.error("获取锁失败", e);
@@ -70,4 +71,14 @@ public class RLockHandle extends AbstractLockHandle {
 
     @Override
     public void multiLock(String[] paramNames, Object[] paramValues, MultiLock multiLock) {}
+
+    @Override
+    public void redLock(String[] paramNames, Object[] paramValues, RedLock redLock) {
+
+    }
+
+    @Override
+    public void readWriteLock(String[] paramNames, Object[] paramValues, ReadWriteLock readWriteLock) {
+
+    }
 }

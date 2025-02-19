@@ -2,6 +2,7 @@ package com.ultralock.Aspect;
 
 import com.ultralock.annotation.Lock;
 import com.ultralock.annotation.MultiLock;
+import com.ultralock.annotation.ReadWriteLock;
 import com.ultralock.annotation.RedLock;
 import com.ultralock.enums.LockHandleTypeEnum;
 import com.ultralock.help.LockHandleHelp;
@@ -49,6 +50,11 @@ public class RedRLockHandle extends AbstractLockHandle {
         }
         Lock lock = redLock.lock();
         redLock(paramNames, paramValues, lock);
+    }
+
+    @Override
+    public void readWriteLock(String[] paramNames, Object[] paramValues, ReadWriteLock readWriteLock) {
+
     }
 
     private void redLock(String[] paramNames, Object[] paramValues, Lock lock) {
