@@ -4,6 +4,8 @@ import com.ultralock.annotation.Lock;
 import com.ultralock.annotation.MultiLock;
 import com.ultralock.annotation.ReadWriteLock;
 import com.ultralock.annotation.RedLock;
+import com.ultralock.annotation.UltraLock;
+import com.ultralock.enums.LockHandleTypeEnum;
 import com.ultralock.enums.ReadWriteLockTypeEnum;
 import org.springframework.stereotype.Component;
 
@@ -74,6 +76,51 @@ public class TestService {
         }
     }
 
+
+    @UltraLock(useLock = LockHandleTypeEnum.R_LOCK, lock = @Lock(prefix = "lock", combineKey = {"#user.name", "#user.age", "#name"}))
+    public void ultraLock_lock(User user, String name) {
+        try {
+            TimeUnit.SECONDS.sleep(50L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @UltraLock(useLock = LockHandleTypeEnum.MULTI_LOCK, lock = @Lock(prefix = "multi", combineKey = {"#user.name", "#user.age", "#name"}))
+    public void ultraLock_multi(User user, String name) {
+        try {
+            TimeUnit.SECONDS.sleep(50L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @UltraLock(useLock = LockHandleTypeEnum.RED_LOCK, lock = @Lock(prefix = "red", combineKey = {"#user.name", "#user.age", "#name"}))
+    public void ultraLock_red(User user, String name) {
+        try {
+            TimeUnit.SECONDS.sleep(50L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @UltraLock(useLock = LockHandleTypeEnum.WRITE_LOCK, lock = @Lock(prefix = "rw", combineKey = {"#user.name", "#user.age", "#name"}))
+    public void ultraLock_write(User user, String name) {
+        try {
+            TimeUnit.SECONDS.sleep(50L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @UltraLock(useLock = LockHandleTypeEnum.READ_LOCK, lock = @Lock(prefix = "rw", combineKey = {"#user.name", "#user.age", "#name"}))
+    public void ultraLock_read(User user, String name) {
+        try {
+            TimeUnit.SECONDS.sleep(50L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

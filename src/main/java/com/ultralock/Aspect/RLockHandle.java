@@ -4,6 +4,7 @@ import com.ultralock.annotation.Lock;
 import com.ultralock.annotation.MultiLock;
 import com.ultralock.annotation.ReadWriteLock;
 import com.ultralock.annotation.RedLock;
+import com.ultralock.annotation.UltraLock;
 import com.ultralock.enums.LockHandleTypeEnum;
 import com.ultralock.help.LockThreadLocalHelp;
 import lombok.extern.slf4j.Slf4j;
@@ -80,5 +81,10 @@ public class RLockHandle extends AbstractLockHandle {
     @Override
     public void readWriteLock(String[] paramNames, Object[] paramValues, ReadWriteLock readWriteLock) {
 
+    }
+
+    @Override
+    public void ultraLock(String[] paramNames, Object[] paramValues, UltraLock lock) {
+        lock(paramNames, paramValues, lock.lock());
     }
 }

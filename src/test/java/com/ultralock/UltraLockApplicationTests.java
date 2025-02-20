@@ -1,5 +1,7 @@
-package com.ultralock;
+package com.UltraLock;
 
+import com.ultralock.TestService;
+import com.ultralock.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,13 +19,13 @@ class UltraLockApplicationTests {
         new Thread(() -> {
             User user = new User();
             user.setName("pkh");
-            user.setAge(27);
+            user.setAge(26);
             testService.lock(user, "001");
         }).start();
         new Thread(() -> {
             User user = new User();
             user.setName("pkh");
-            user.setAge(27);
+            user.setAge(26);
             testService.lock(user, "001");
         }).start();
 
@@ -35,7 +37,7 @@ class UltraLockApplicationTests {
         new Thread(() -> {
             User user = new User();
             user.setName("pkh");
-            user.setAge(27);
+            user.setAge(26);
             testService.lock_01(user, "001");
         }).start();
 
@@ -45,17 +47,13 @@ class UltraLockApplicationTests {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-//        User user = new User();
-//        user.setName("pkh");
-//        user.setAge(27);
-//        testService.test01(user, "001");
     }
 
     @Test
     void multiLock() {
         User user = new User();
         user.setName("pkh");
-        user.setAge(27);
+        user.setAge(26);
         testService.multiLock(user, "002");
     }
 
@@ -63,7 +61,7 @@ class UltraLockApplicationTests {
     void redLock() {
         User user = new User();
         user.setName("pkh");
-        user.setAge(27);
+        user.setAge(26);
         testService.redLock(user, "003");
     }
 
@@ -71,7 +69,7 @@ class UltraLockApplicationTests {
     void rwLock_write() {
         User user = new User();
         user.setName("pkh");
-        user.setAge(27);
+        user.setAge(26);
         testService.rwLock_write(user, "004");
     }
 
@@ -80,8 +78,48 @@ class UltraLockApplicationTests {
     void rwLock_read() {
         User user = new User();
         user.setName("pkh");
-        user.setAge(27);
+        user.setAge(26);
         testService.rwLock_read(user, "004");
+    }
+
+    @Test
+    void ultraLock_lock() {
+        User user = new User();
+        user.setName("pkh");
+        user.setAge(26);
+        testService.ultraLock_lock(user, "004");
+    }
+
+    @Test
+    void ultraLock_multi() {
+        User user = new User();
+        user.setName("pkh");
+        user.setAge(26);
+        testService.ultraLock_multi(user, "004");
+    }
+
+    @Test
+    void ultraLock_red() {
+        User user = new User();
+        user.setName("pkh");
+        user.setAge(26);
+        testService.ultraLock_red(user, "004");
+    }
+
+    @Test
+    void ultraLock_read() {
+        User user = new User();
+        user.setName("pkh");
+        user.setAge(26);
+        testService.ultraLock_read(user, "004");
+    }
+
+    @Test
+    void ultraLock_write() {
+        User user = new User();
+        user.setName("pkh");
+        user.setAge(26);
+        testService.ultraLock_write(user, "004");
     }
 
 

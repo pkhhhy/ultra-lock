@@ -4,6 +4,7 @@ import com.ultralock.annotation.Lock;
 import com.ultralock.annotation.MultiLock;
 import com.ultralock.annotation.ReadWriteLock;
 import com.ultralock.annotation.RedLock;
+import com.ultralock.annotation.UltraLock;
 
 import java.util.List;
 
@@ -26,5 +27,8 @@ public interface LockHandle {
     void redLock(String[] paramNames, Object[] paramValues, RedLock redLock);
 
     void readWriteLock(String[] paramNames, Object[] paramValues, ReadWriteLock readWriteLock);
+
+    void ultraLock(String[] paramNames, Object[] paramValues, UltraLock lock);
+
 
 }

@@ -4,6 +4,7 @@ import com.ultralock.annotation.Lock;
 import com.ultralock.annotation.MultiLock;
 import com.ultralock.annotation.ReadWriteLock;
 import com.ultralock.annotation.RedLock;
+import com.ultralock.annotation.UltraLock;
 import com.ultralock.enums.LockHandleTypeEnum;
 import com.ultralock.lockFactory.LockHandleFactory;
 import org.aspectj.lang.JoinPoint;
@@ -84,6 +85,25 @@ public class LockAspect {
     @After("@annotation(readWriteLock)")
     public void afterRW(JoinPoint joinPoint, ReadWriteLock readWriteLock) {
         LockHandle lockHandle = lockHandleFactory.getLockHandle(LockHandleTypeEnum.READWRITE_LOCK.getType());
+        lockHandle.unLock();
+    }
+
+    @Before("@annotation(ultraLock)")
+    public void beforeUltraLock(JoinPoint joinPoint, UltraLock ultraLock) {
+        Object[] args = joinPoint.getArgs();
+        Signature signature = joinPoint.getSignature();
+        String[] parameterNames = ((MethodSignature) signature).getParameterNames();
+
+        LockHandleTypeEnum lockHandleTypeEnum = ultraLock.useLock();
+
+        LockHandle lockHandle = lockHandleFactory.getLockHandle(lockHandleTypeEnum.getType());
+        lockHandle.ultraLock(parameterNames, args, ultraLock);
+    }
+
+    @After("@annotation(ultraLock)")
+    public void afterUltraLock(JoinPoint joinPoint, UltraLock ultraLock) {
+        LockHandleTypeEnum lockHandleTypeEnum = ultraLock.useLock();
+        LockHandle lockHandle = lockHandleFactory.getLockHandle(lockHandleTypeEnum.getType());
         lockHandle.unLock();
     }
 }
